@@ -1,4 +1,5 @@
 const events = require('../models/eventModel');
+const bookings = require('../models/booking')
 
 exports.addEvent = async (req, res) => {
   const { eventName, eventCost, eventDescription } = req.body;
@@ -21,11 +22,18 @@ exports.addEvent = async (req, res) => {
 };
 
 exports.getAllEvents = async(req,res)=>{
+    const searchKey = req.query.search
+    const query = {
+        eventName : {
+            $regex:searchKey,
+            $options:"i"
+        }
+    }
     console.log('inside getAllEvents');
     try{
-        const allevents = await events.find()
+        const allevents = await events.find(query)
         res.status(200).json(allevents)
-    }catch{
+    }catch(err){
         res.status(401).json(err)
     }
 }
@@ -54,3 +62,35 @@ exports.removeEvent = async(req,res)=>{
         res.status(401).json(err);
     }
 }
+
+exports.getFullEvents = async (req, res) => {
+  console.log('inside getFullEvents');
+  try {
+    const fullEvents = await events.find();
+    res.status(200).json(fullEvents);
+  } catch(err){
+    res.status(400).json(err);
+  }
+};
+
+exports.bookEvent = async (req, res) => {
+    console.log('inside bookEvent');
+    console.log('req.body---------------->>>', req.body);
+    const { eventId, date, location, requirements } = req.body;
+    const userId = req.payload;
+
+    try {
+        const existingBooking = await bookings.findOne({ eventId, date });
+        console.log(existingBooking);
+        if (existingBooking) {
+            res.status(406).json('Booking is already in DB.. Add another date!');
+        } else {
+            const newBooking = new bookings({ userId, eventId, date, location, requirements });
+            await newBooking.save();
+            res.status(200).json(newBooking);
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(401).json('Error occurred while booking the event');
+    }
+};

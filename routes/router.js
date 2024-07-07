@@ -1,7 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/userController')
-
 const eventController = require('../controllers/eventController')
+const jwtMiddleware = require('../middlewares/jwtMiddleware')
 
 const router = new express.Router();
 
@@ -12,9 +12,9 @@ router.post('/register',userController.registerUser)
 router.post('/login',userController.loginUser)
 
 //add event
-router.post('/events/addEvent', eventController.addEvent);
+router.post('/events/addEvent',jwtMiddleware,eventController.addEvent);
 
-//getAllEvents
+//getAllEvents based on searchkey
 router.get('/events', eventController.getAllEvents);
 
 //updateEvent
@@ -23,4 +23,12 @@ router.put('/events/:eid/edit', eventController.editEvent);
 //deleteEvent
 router.delete('/events/:eid/delete', eventController.removeEvent);
 
-module.exports = router
+//  Get all events
+ router.get('/all-events', eventController.getFullEvents);
+
+// Book an event
+router.post('/events/bookings',jwtMiddleware, eventController.bookEvent);
+
+
+
+module.exports = router;
