@@ -3,9 +3,9 @@ const bookings = require('../models/booking')
 
 exports.addEvent = async (req, res) => {
   const { eventName, eventCost, eventDescription } = req.body;
-
   console.log("inside addEvent");
   console.log('Incoming Event Details:', req.body); 
+  const userId = req.payload;
 
   try{
     const existingEvent = await events.findOne({eventName})
@@ -75,6 +75,7 @@ exports.getFullEvents = async (req, res) => {
 
 exports.bookEvent = async (req, res) => {
     console.log('inside bookEvent');
+    console.log('req.body---------------->>>', req);
     console.log('req.body---------------->>>', req.body);
     const { eventId, date, location, requirements } = req.body;
     const userId = req.payload;
@@ -94,3 +95,4 @@ exports.bookEvent = async (req, res) => {
         res.status(401).json('Error occurred while booking the event');
     }
 };
+
