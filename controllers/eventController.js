@@ -75,8 +75,6 @@ exports.getFullEvents = async (req, res) => {
 
 exports.bookEvent = async (req, res) => {
     console.log('inside bookEvent');
-    console.log('req.body---------------->>>', req);
-    console.log('req.body---------------->>>', req.body);
     const { eventId, date, location, requirements } = req.body;
     const userId = req.payload;
 

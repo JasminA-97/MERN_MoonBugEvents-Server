@@ -25,7 +25,7 @@ router.put('/events/:eid/edit', eventController.editEvent);
 router.delete('/events/:eid/delete', eventController.removeEvent);
 
 //  Get all events
- router.get('/all-events', eventController.getFullEvents);
+ router.get('/all-events',jwtMiddleware, eventController.getFullEvents);
 
 // Book an event
 router.post('/events/bookings',jwtMiddleware, eventController.bookEvent);
@@ -37,6 +37,12 @@ router.get('/all-bookings',bookingController.getAllBookings);
 router.put('/all-bookings/:bookingId',bookingController.updateBookingStatus);
 
 //get booking history of a single user who is logged-in
-router.get('/user-bookings',jwtMiddleware,bookingController.getBookingHistory)
+router.get('/user-bookings',jwtMiddleware,bookingController.getBookingHistory);
+
+//user edit his booking
+router.put('/user-bookings/:bookingId/edit', jwtMiddleware, bookingController.userEditBooking);
+
+//user delete his booking
+router.delete('/user-bookings/:bookingId/delete', jwtMiddleware, bookingController.userDeleteBooking);
 
 module.exports = router;
