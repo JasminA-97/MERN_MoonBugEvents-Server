@@ -2,7 +2,7 @@ const express = require('express');
 const userController = require('../controllers/userController')
 const eventController = require('../controllers/eventController')
 const bookingController = require('../controllers/bookingController')
-const jwtMiddleware = require('../middlewares/jwtMiddleware')
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 const router = new express.Router();
 
@@ -44,5 +44,8 @@ router.put('/user-bookings/:bookingId/edit', jwtMiddleware, bookingController.us
 
 //user delete his booking
 router.delete('/user-bookings/:bookingId/delete', jwtMiddleware, bookingController.userDeleteBooking);
+
+//get all users from booking collection for adminViewBooking
+router.get('/users-with-bookings', jwtMiddleware, bookingController.getUsersWithBookings);
 
 module.exports = router;

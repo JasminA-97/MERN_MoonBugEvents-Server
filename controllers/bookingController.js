@@ -79,3 +79,42 @@ exports.userDeleteBooking = async(req,res)=>{
     res.status(401).json(err)
   }
 }
+
+//get all users from booking collection for adminViewBooking
+exports.getUsersWithBookings = async (req, res) => {
+  console.log('indside getUsersWithBookings');
+  try {
+    const usersWithBookings = await bookings.aggregate([
+      {
+        $lookup: {
+          from: 'users', // Collection name for users
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      { $unwind: '$userDetails' },
+      {
+        $group: {
+          _id: '$userId',
+          name: { $first: '$userDetails.username' }, // Adjust this based on your user schema
+          email: { $first: '$userDetails.email' },
+          phone: { $first: '$userDetails.phone' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          userId: '$_id',
+          name: 1,
+          email: 1,
+          phone: 1
+        }
+      }
+    ]);
+
+    res.status(200).json(usersWithBookings);
+  } catch (err) {
+    console.error(err);
+  }
+};
