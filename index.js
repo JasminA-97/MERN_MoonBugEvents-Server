@@ -5,10 +5,10 @@ const cors = require('cors');
 const router = require('./routes/router')
 
 const moonbugServer = express();
+
 moonbugServer.use(cors());
 moonbugServer.use(express.json());
-moonbugServer.use(router)
-
+moonbugServer.use(router) 
 
 const PORT = 3000 || process.env.PORT
 
@@ -19,3 +19,4 @@ moonbugServer.listen(PORT,()=>{
 moonbugServer.get('/',(req,res)=>{
     res.status(200).send(`<h1 style='color:red;'>MoonBug server started and waiting for client request</h1>`)
 })
+

@@ -35,3 +35,17 @@ exports.registerUser = async (req,res) => {
         res.status(401).json(err)
     }
  }
+
+ //edit user profile
+ exports.editProfile = async(req,res)=>{
+    console.log('inside editProfile fn ');
+    const {username,email,password,phone} = req.body
+    const userId = req.payload
+    try{
+        const updatedUser = await users.findByIdAndUpdate({_id:userId},{username,email,password,phone},{new:true})
+        await updatedUser.save()
+        res.status(200).json(updatedUser)
+    }catch(err){
+        res.status(401).json(err)
+    }
+ }

@@ -48,4 +48,8 @@ router.delete('/user-bookings/:bookingId/delete', jwtMiddleware, bookingControll
 //get all users from booking collection for adminViewBooking
 router.get('/users-with-bookings', jwtMiddleware, bookingController.getUsersWithBookings);
 
+//edit user profile
+router.put('/user/edit', jwtMiddleware, userController.editProfile);
+
+
 module.exports = router;

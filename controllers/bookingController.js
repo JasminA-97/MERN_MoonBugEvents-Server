@@ -23,7 +23,7 @@ exports.getAllBookings = async (req, res) => {
     try {
       const updatedBookingStatus = await bookings.findByIdAndUpdate(bookingId,{status},{ new: true});
       if (updatedBookingStatus) {
-        res.status(200).json(updatedBookingStatus);
+        res.status(200).json(updatedBookingStatus);  
       }else{
         return res.status(404).json('Booking not found');
       }
@@ -60,6 +60,12 @@ exports.userEditBooking = async (req, res) => {
     );
     if (userUpdatedBooking) {
       res.status(200).json(userUpdatedBooking);
+      //socket
+      io.emit('admin-notification', {
+        message: `User ${req.payload} edited their booking.`,
+        timestamp: new Date().toLocaleString(),
+      });
+
     } else {
       return res.status(404).json('Booking not found');
     }
@@ -87,7 +93,7 @@ exports.getUsersWithBookings = async (req, res) => {
     const usersWithBookings = await bookings.aggregate([
       {
         $lookup: {
-          from: 'users', // Collection name for users
+          from: 'users', 
           localField: 'userId',
           foreignField: '_id',
           as: 'userDetails'
@@ -97,7 +103,7 @@ exports.getUsersWithBookings = async (req, res) => {
       {
         $group: {
           _id: '$userId',
-          name: { $first: '$userDetails.username' }, // Adjust this based on your user schema
+          name: { $first: '$userDetails.username' }, 
           email: { $first: '$userDetails.email' },
           phone: { $first: '$userDetails.phone' }
         }
