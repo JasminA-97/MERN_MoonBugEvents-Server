@@ -63,6 +63,7 @@ exports.removeEvent = async(req,res)=>{
     }
 }
 
+//for each user
 exports.getFullEvents = async (req, res) => {
   console.log('inside getFullEvents');
   try {

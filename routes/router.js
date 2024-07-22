@@ -2,6 +2,7 @@ const express = require('express');
 const userController = require('../controllers/userController')
 const eventController = require('../controllers/eventController')
 const bookingController = require('../controllers/bookingController')
+const reviewController = require('../controllers/reviewController')
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 const router = new express.Router();
@@ -24,8 +25,11 @@ router.put('/events/:eid/edit', eventController.editEvent);
 //deleteEvent
 router.delete('/events/:eid/delete', eventController.removeEvent);
 
-//  Get all events
+//  Get all events for each user
  router.get('/all-events',jwtMiddleware, eventController.getFullEvents);
+
+ //  Get all event for home page
+ router.get('/all-event', eventController.getFullEvents);
 
 // Book an event
 router.post('/events/bookings',jwtMiddleware, eventController.bookEvent);
@@ -51,5 +55,10 @@ router.get('/users-with-bookings', jwtMiddleware, bookingController.getUsersWith
 //edit user profile
 router.put('/user/edit', jwtMiddleware, userController.editProfile);
 
+//user add a review
+router.post('/review/add',jwtMiddleware,reviewController.addReview)
+
+ //  Get all reviews for home page
+ router.get('/all-reviews', reviewController.getReviews);
 
 module.exports = router;
