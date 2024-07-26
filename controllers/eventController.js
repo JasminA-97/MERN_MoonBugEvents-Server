@@ -4,15 +4,15 @@ const bookings = require('../models/booking')
 exports.addEvent = async (req, res) => {
   const { eventName, eventCost, eventDescription } = req.body;
   console.log("inside addEvent");
-  console.log('Incoming Event Details:', req.body); 
   const userId = req.payload;
+  const eventImg = req.file.filename
 
   try{
     const existingEvent = await events.findOne({eventName})
     if(existingEvent){
         res.status(406).json('Event is already in DB...Add another!')
     }else{
-        const newEvent = new events({ eventName, eventCost, eventDescription });
+        const newEvent = new events({ eventName, eventCost, eventDescription,eventImg});
         await newEvent.save();
         res.status(200).json(newEvent);
     }
@@ -41,10 +41,11 @@ exports.getAllEvents = async(req,res)=>{
 exports.editEvent = async(req,res)=>{
     console.log('inside editEvent');
     const {eid}=req.params
-    
-    const {eventName,eventCost,eventDescription}=req.body
+    const {eventName,eventCost,eventDescription,eventImg}=req.body
+    const uploadImg = req.file?req.file.filename:eventImg
+    const userId=req.payload
     try{
-        const updatedEvent = await events.findByIdAndUpdate(eid,{eventName,eventCost,eventDescription},{new:true})
+        const updatedEvent = await events.findByIdAndUpdate({_id:eid},{eventName,eventCost,eventDescription,eventImg:uploadImg,userId},{new:true})
         await updatedEvent.save()
         res.status(200).json(updatedEvent)
     }catch(err){

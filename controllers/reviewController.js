@@ -28,7 +28,7 @@ const reviews = require('../models/reviewModel')
         console.log('inside getReviews');
         try {
         const homeReviews = await reviews.find()
-             .populate('userId', 'username');
+             .populate('userId', 'username profilePic');
         res.status(200).json(homeReviews);
         } catch(err){
         res.status(400).json(err);

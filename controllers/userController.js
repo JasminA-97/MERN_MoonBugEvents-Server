@@ -39,10 +39,12 @@ exports.registerUser = async (req,res) => {
  //edit user profile
  exports.editProfile = async(req,res)=>{
     console.log('inside editProfile fn ');
-    const {username,email,password,phone} = req.body
+    const {username,email,password,phone,profilePic} = req.body
+    const uploadImg = req.file?req.file.filename:profilePic
+
     const userId = req.payload
     try{
-        const updatedUser = await users.findByIdAndUpdate({_id:userId},{username,email,password,phone},{new:true})
+        const updatedUser = await users.findByIdAndUpdate({_id:userId},{username,email,password,phone,profilePic:uploadImg},{new:true})
         await updatedUser.save()
         res.status(200).json(updatedUser)
     }catch(err){
