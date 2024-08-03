@@ -2,6 +2,7 @@ const events = require('../models/eventModel');
 const bookings = require('../models/booking')
 const users = require('../models/userModel')
 
+
 // Fetch all bookings with populated user and event details
 exports.getAllBookings = async (req, res) => {
   console.log('inside getAllBookings');

@@ -75,6 +75,23 @@ exports.getFullEvents = async (req, res) => {
   }
 };
 
+
+//Get SingleEvent by id
+exports.getSingleEventById = async (req, res) => {
+    console.log('inside getSingleEventById');
+    const { eid } = req.params;
+    try {
+      const event = await events.findById(eid);
+      if (event) {
+        res.status(200).json(event);
+      } else {
+        res.status(404).json('Event not found');
+      }
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  };
+  
 exports.bookEvent = async (req, res) => {
     console.log('inside bookEvent');
     const { eventId, date, location, requirements } = req.body;
@@ -94,5 +111,5 @@ exports.bookEvent = async (req, res) => {
         console.error(err);
         res.status(401).json('Error occurred while booking the event');
     }
-};
 
+};

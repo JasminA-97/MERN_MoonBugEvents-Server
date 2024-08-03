@@ -62,4 +62,8 @@ router.post('/review/add',jwtMiddleware,reviewController.addReview)
  //Get all reviews for home page
  router.get('/all-reviews', reviewController.getReviews);
 
+ //Get single event by id
+ router.get('/all-events/:eid', eventController.getSingleEventById);
+
+ 
 module.exports = router;
