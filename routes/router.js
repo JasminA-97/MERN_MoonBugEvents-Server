@@ -42,7 +42,7 @@ router.get('/all-bookings',bookingController.getAllBookings);
 router.put('/all-bookings/:bookingId',bookingController.updateBookingStatus);
 
 //get booking history of a single user who is logged-in
-router.get('/user-bookings',jwtMiddleware,bookingController.getBookingHistory);
+router.get('/user-bookings',jwtMiddleware, bookingController.getBookingHistory);
 
 //user edit his booking
 router.put('/user-bookings/:bookingId/edit', jwtMiddleware, bookingController.userEditBooking);

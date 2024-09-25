@@ -60,14 +60,8 @@ exports.userEditBooking = async (req, res) => {
       { new: true }
     );
     if (userUpdatedBooking) {
-      res.status(200).json(userUpdatedBooking);
-      //socket
-      io.emit('admin-notification', {
-        message: `User ${req.payload} edited their booking.`,
-        timestamp: new Date().toLocaleString(),
-      });
-
-    } else {
+      res.status(200).json(userUpdatedBooking);  
+    }else{
       return res.status(404).json('Booking not found');
     }
   } catch (err) {
